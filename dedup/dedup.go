@@ -1,14 +1,14 @@
-package clonefile
+package main
 
 import (
-	"crypto"
-	_ "crypto/sha256"
+	"crypto/sha256"
 	"encoding/hex"
-	"github.com/kazuki-ma/clonefile/gosrc/clonefile"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/kazuki-ma/ioutil/clonefile"
 )
 
 var wd, _ = os.Getwd()
@@ -94,17 +94,17 @@ func dedup(files []string) error {
 }
 
 func hash(p string) (hash string, err error) {
-	sha256 := crypto.SHA256.New()
+	hashing := sha256.New()
 
 	file, err := os.Open(p)
 	if err != nil {
 		return
 	}
 
-	_, err = io.Copy(sha256, file)
+	_, err = io.Copy(hashing, file)
 	if err != nil {
 		return
 	}
 
-	return hex.EncodeToString(sha256.Sum(nil)), nil
+	return hex.EncodeToString(hashing.Sum(nil)), nil
 }
